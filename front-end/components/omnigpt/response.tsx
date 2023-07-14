@@ -13,7 +13,7 @@ export interface IResponseProps {
 export default function Response(props: IResponseProps) {
   const { respose, output, responseType } = props
   return (
-    <div className=" flex justify-evenly rounded-lg text-black w-full m-4 p-6 bg-pm-gray-2 ">
+    <div className=" flex justify-evenly rounded-lg text-black w-full m-4 p-6 bg-[#EFF4FF] ">
       {responseType === null ? (
         <>
           <button

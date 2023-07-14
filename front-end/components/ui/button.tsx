@@ -15,7 +15,8 @@ export default function Button(props: IButtonProps) {
   return (
     <motion.button
       onClick={handleClick}
-      className="rounded-xl p-4 text-2xl text-black max-h-min bg-pm-gray-2"
+      className="rounded-xl p-4 text-2xl text-black max-h-min bg-[#EFF4FF]
+      "
       whileHover={{
         boxShadow: "4px 4px 0px 2px #000000",
         backgroundColor: "#7390AA",

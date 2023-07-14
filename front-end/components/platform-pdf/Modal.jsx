@@ -24,30 +24,30 @@ const Modal = () => {
 
     // Reset the file input value to allow selecting the same file again
     event.target.value = '';
-    modalRef.current?.showModal();
+    window.my_modal_4.showModal();
   };
 
   const handleGenerateResults = () => {
     if (selectedFile) {
-      // Use the selected file here for generating results
-      console.log(selectedFile);
-      console.log(textValue);
-
-      // Create form data to send with the POST request
+      // Create form data
       const formData = new FormData();
-      formData.append('text', textValue);
-      formData.append('file', selectedFile);
-
-      // Send the POST request
-      fetch('http://localhost:3001/api/v1/post', {
+      formData.append('dummyName', 'Dummy Name');
+      formData.append('bookContent', textValue);
+      formData.append('pdf', selectedFile);
+      console.log(formData)
+      // Send POST request to API
+      fetch('http://localhost:3000/api/v1/pdf', {
         method: 'POST',
         body: formData,
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data); // Handle the response data
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          // Handle the response data here
         })
-        .catch(error => console.log(error));
+        .catch((error) => {
+          console.error('Error posting book data:', error);
+        });
     } else {
       console.log('No file selected');
     }
@@ -57,7 +57,7 @@ const Modal = () => {
     buttonRef.current?.addEventListener('click', () => {
       modalRef.current?.showModal();
     });
-  }, []);
+  });
 
   const handleTextChange = () => {
     setTextValue(textInputRef.current.value);
@@ -85,7 +85,7 @@ const Modal = () => {
                 onChange={handleTextChange}
               />
               <button className="btn btn-custom" onClick={handleButtonClick}>
-                <img src="./button-image.png" className="h-6 w-6" />
+                <img src="./button-image.png" className="h-6 w-6" alt="Upload" />
               </button>
               <input
                 type="file"
@@ -102,7 +102,6 @@ const Modal = () => {
             </div>
           </div>
           <div className="modal-action">
-            {/* if there is a button, it will close the modal */}
             <button className="btn btn-accent">Close</button>
           </div>
         </form>

@@ -15,7 +15,7 @@ export default function TextInput(props: ITextInputProps) {
   return (
     <textarea
       className="textarea border-2  rounded-lg textarea-bordered
-      text-black w-full mx-4 bg-pm-gray-2 text-lg
+      text-black w-full mx-4  text-lg bg-[#EFF4FF]
       "
       onChange={handleInput}
     ></textarea>

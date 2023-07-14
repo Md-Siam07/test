@@ -4,6 +4,7 @@ import * as React from "react"
 import TextInput from "./text-input"
 import SendButton from "./send-buton"
 import Response from "./response"
+import PdfShare from "@/components/pdf-sharing/pdf-sharing"
 
 export interface IOmniGPTProps {}
 
@@ -16,6 +17,8 @@ export default function OmniGPT(props: IOmniGPTProps) {
   const [isFetching, setIsFetching] = React.useState<boolean>(false)
   const [response, setResponse] = React.useState<string | null>(null)
   const [responseType, setResponseType] = React.useState<"text" | "speech" | null>(null)
+
+  console.log("response in index", response)
 
   // API callback
   React.useEffect(() => {
@@ -55,6 +58,7 @@ export default function OmniGPT(props: IOmniGPTProps) {
 
   return (
     <div className="flex flex-col">
+      <p className="text-4xl font-bold text-white ml-2 my-2">Jantrik GPT</p>
       <div className="flex justify-center w-[95vw] lg:w-[60vw]">
         <TextInput setTextInput={setTextInput} />
         <SendButton
@@ -62,7 +66,9 @@ export default function OmniGPT(props: IOmniGPTProps) {
           input={textInput === "" ? "speech" : "text"}
           setIsFetching={setIsFetching}
         />
+        <PdfShare prompt={textInput} setResponse={setResponse} />
       </div>
+      <p className="text-xl font-bold text-white ml-2 mt-6">Chose Preferred Output</p>
       <Response
         responseType={responseType}
         respose={response}

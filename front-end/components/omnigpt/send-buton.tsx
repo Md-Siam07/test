@@ -34,10 +34,12 @@ export default function SendButton(props: ISendButtonProps) {
 
     const submissionButton = document.createElement("button")
     submissionButton.innerText = "Submit"
+    submissionButton.classList.add("btn")
     submissionButton.onclick = async () => {
-      props.setTextInput(await getTextFromAssemblyAI(blob))
+      const text = await getTextFromAssemblyAI(blob)
+      console.log(text)
+      props.setTextInput(text)
       props.setIsFetching(true)
-
       dialogRef.current?.close()
     }
     innerDivRef.current?.appendChild(submissionButton)
@@ -49,8 +51,9 @@ export default function SendButton(props: ISendButtonProps) {
         onClick={() => {
           if (props.input === "speech") {
             dialogRef.current?.showModal()
+          } else {
+            props.setIsFetching(true)
           }
-          props.setIsFetching(true)
         }}
       >
         {props.input === "text" ? <AiOutlineSend /> : <BsFillMicFill />}
