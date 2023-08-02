@@ -10,6 +10,8 @@ module.exports.omnigpt = async (req, res, next) => {
   if (input === "text") {
     const { payload } = req.body
 
+    console.log(payload)
+
     if (payload === undefined) {
       res.send(400)
     }
@@ -27,23 +29,23 @@ module.exports.omnigpt = async (req, res, next) => {
       res.send(gptResponse)
     }
   } else {
-    console.log("ENTER SPEECH PIPELINE")
+    // console.log("ENTER SPEECH PIPELINE")
 
-    const userText =
-      speechToText(req, key, region) ?? "Repeat: The speech you provided could not be recognized"
-    const gptResponse = await textToText(userText)
+    // const userText =
+    //   speechToText(req, key, region) ?? "Repeat: The speech you provided could not be recognized"
+    // const gptResponse = await textToText(userText)
 
-    if (output === "speech") {
-      const audioStream = await textToSpeech(key, region, gptResponse, null) // filename is null
+    // if (output === "speech") {
+    //   const audioStream = await textToSpeech(key, region, gptResponse, null) // filename is null
 
-      res.set({
-        "Content-Type": "audio/mpeg",
-        "Transfer-Encoding": "chunked",
-      })
-      audioStream.pipe(res)
-    } else {
-      res.send(gptResponse)
-    }
+    //   res.set({
+    //     "Content-Type": "audio/mpeg",
+    //     "Transfer-Encoding": "chunked",
+    //   })
+    //   audioStream.pipe(res)
+    // } else {
+    //   res.send(gptResponse)
+    // }
   }
 
   //   if (!key || !region || !phrase) res.status(404).send("Invalid query string")

@@ -42,7 +42,6 @@ module.exports.createPost = async (req, res) => {
 module.exports.getPost = async (req, res) => {
   
   q = Pdf.find()
-    .sort({ time: -1 })
     .limit(10);
   q.exec((err, doc) => {
     if (!err) {

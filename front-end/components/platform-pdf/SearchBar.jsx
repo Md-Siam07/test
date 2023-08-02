@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Preview from './Preview';
-import SearchBar from './SearchBar'
 
-const StatusView = () => {
+const SearchBar = () => {
   const [showFullContent, setShowFullContent] = useState(false);
   const time = Date.now();
   const [bookData, setBookData] = useState([]);
-
+  const [searchTerm, setSearchTerm] = useState('');
 
   const modalRef = useRef(null);
   const buttonRef = useRef(null);
@@ -23,20 +22,25 @@ const StatusView = () => {
       .then(response => response.json())
       .then(data => {
         setBookData(data);
-        console.log(data)
+        console.log(data);
       })
       .catch(error => {
         console.error('Error fetching book data:', error);
       });
   }, []);
 
-
-  // Function to handle the "See More" click
   const handleSeeMoreClick = () => {
     setShowFullContent(true);
   };
 
-  // Format the time in hh:mm mm dd, yy format
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+  };
+
+  const filteredBookData = bookData.filter((book) =>
+    book.keywords.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const formattedTime = new Date(time).toLocaleString(undefined, {
     hour: 'numeric',
     minute: 'numeric',
@@ -45,16 +49,20 @@ const StatusView = () => {
     year: '2-digit',
   });
 
-  function splitStringByComma(str) {
-    return str.split(',');
-  }
-  
-
   return (
     <>
-    <SearchBar />
-      {bookData.map((book, index) => (
-        <div className="hero hero-custom mb-5" key={index}>
+      <input
+        type="text"
+        placeholder="Search..."
+        value={searchTerm}
+        onChange={(e) => handleSearch(e.target.value)}
+        className="search-bar"
+      />
+        <br></br>
+      {searchTerm && filteredBookData.length > 0 ? (
+        filteredBookData.map((book, index) => (
+          <div className="hero hero-custom mb-5" key={index}>
+            <div className="hero hero-custom mb-5" key={index}>
           <div className="hero-content hero-post flex-col lg:flex-row-reverse mb-5">
             <div className="w-full lg:w-2/3 flex justify-center">
               <img src={book.imageURLs[0]} alt="Image 1" width="200px" />
@@ -71,7 +79,7 @@ const StatusView = () => {
                     <button className="btn join-item btn-sm btn-accent mx-2" ref={buttonRef}>
                       See More..
                     </button>
-                    <button className="btn join-item btn-sm btn-accent mx-2" onClick={() => window.open(book.pdf, '_blank')}>View PDF</button>
+                    <button className="btn join-item btn-sm btn-accent mx-2">View PDF</button>
                     <dialog ref={modalRef} id={`my_modal_${index}`} className="modal">
                       <form method="dialog" className="modal-box modal-custom w-11/12 max-w-5xl">
                         <p className="text-2xl leading-12 my-10">
@@ -93,7 +101,6 @@ const StatusView = () => {
                               <img src={book.imageURLs[1]} alt="Image 2" width="200px" />
                             </div>
                             <p className="m-8">Posted on: {formattedTime}</p>
-                            <p>Keywords: {book.keywords}</p>
 
                             <button className="btn btn-cust1 btn-accent m-8">Share</button>
                           </div>
@@ -105,14 +112,19 @@ const StatusView = () => {
                     </dialog>
                   </div>
                 )}
-                <p className="mb-5">Posted on: {formattedTime}</p>
+                <p className="mt-2">Posted on: {formattedTime}</p>
+                <p className='mb-5 text-sm'>Keywords: {book.keywords}</p>
               </div>
             </div>
           </div>
         </div>
-      ))}
+          </div>
+        ))
+      ) : (
+        !searchTerm && <p className='mb-5'>No results found.</p>
+      )}
     </>
   );
 };
 
-export default StatusView;
+export default SearchBar;
